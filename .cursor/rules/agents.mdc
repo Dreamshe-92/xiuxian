@@ -1,0 +1,6 @@
+---
+description: 项目上下文与工作流约定（入口）
+alwaysApply: true
+---
+
+开工前先完整阅读仓库根目录的 `AGENTS.md` 与 `PROGRESS.md`，并严格遵循其中约定：开工先 `git pull` 并读进度；收工更新 `PROGRESS.md` 再提交推送。`AGENTS.md` 是本项目所有约定的唯一事实源。

@@ -1,0 +1,32 @@
+# 环境变量与密钥
+.env
+.env.*
+*.pem
+*.key
+
+# 依赖
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# 构建产物
+dist/
+build/
+out/
+*.egg-info/
+.next/
+.nuxt/
+
+# IDE
+.idea/
+.vscode/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志与临时文件
+*.log
+*.tmp
