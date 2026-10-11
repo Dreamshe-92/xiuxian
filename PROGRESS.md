@@ -13,6 +13,7 @@
 - [x] 建立 AI 上下文入口（AGENTS.md）与进度交接文件（PROGRESS.md）
 - [x] 竞品调研三轮：新手全流程 / 战斗与修炼升级链 / 经济与制造系统（实测角色"顾寒衣"已升炼气中期）
 - [x] 调研文档覆盖度盘点：8 大板块已扎实收集 + 15 项分级缺口清单（见调研文档第七节）
+- [x] GitHub 远程仓库接入并完成首次推送（https://github.com/Dreamshe-92/xiuxian.git，main 已跟踪 origin/main）
 
 ## 下一步（TODO）
 
@@ -31,4 +32,5 @@
 ## 环境备注
 
 - 本机（Windows）git 已配置用户 Dreamshe-92 / 283661439@qq.com；仓库换行符已用 .gitattributes 锁 LF。
-- GitHub 远程仓库尚未创建。
+- GitHub 远程仓库：https://github.com/Dreamshe-92/xiuxian.git（注意仓库名是 xiuxian 不是 xuxian）。
+- 直连 github.com 偶发 443 超时，重试即可；本机未常驻代理。
