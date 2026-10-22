@@ -13,9 +13,10 @@
 ## 技术栈
 
 - **已定**：HTML + JavaScript + Phaser.js（浏览器直开；可 CDN 或本地脚本）
+- **UI 架构（评审已定）**：DOM 覆盖层 + Phaser 演出层混合——面板/列表/文本全用 HTML/CSS，Phaser 只管战斗演出/地图/特效（见架构文档 §3.1.1）
 - **架构目标**：运行高性能、功能高扩展性、代码高可维护性
-- 构建器 / 后端 / AI 接入：待架构确认后的需求调研再定；架构目录已预留 `services/` 等扩展位
-- 详细目录与模块说明见：`docs/phaser-project-architecture.md`
+- 构建器 / 后端 / AI 接入：待需求调研再定；AI 接入必须走后端代理（key 不进前端），架构目录已预留 `services/` 等扩展位
+- 详细目录与模块说明见：`docs/phaser-project-architecture.md`（评审意见见 `docs/评审意见-phaser架构.md`）
 
 ## 目录结构
 

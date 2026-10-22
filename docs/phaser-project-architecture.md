@@ -104,6 +104,9 @@ xiuxian/                          # 仓库根（项目代号 xuxian）
     │   ├── cultivation/          # 闭关/突破/功法研习（待需求确认）
     │   ├── crafting/             # 炼丹/炼器/阵纹（待需求确认）
     │   ├── spirit-beast/         # 捕捉、出战、融合入口（融合细则待确认）
+    │   ├── daoxin/               # 道心/扮演法（AI 评价玩家行为是否合道，影响修炼与突破）【评审必改1】
+    │   ├── collection/           # 收集图鉴+吞噬合成（图鉴带排名，低阶物融合高阶，进度解锁功法形态）【评审必改1】
+    │   ├── world-events/         # 周期性世界事件（禁区/黑暗动乱式；单机首版可为定时事件空壳）【评审必改1】
     │   ├── quest/                # 任务/引导链（待需求确认）
     │   └── ui/                   # 非场景级 UI 逻辑（HUD 数据绑定等）
     │
@@ -125,7 +128,7 @@ xiuxian/                          # 仓库根（项目代号 xuxian）
     ├── services/                 # 对外服务封装（本阶段多为本地；预留）
     │   ├── AudioService.js
     │   ├── ConfigService.js      # 读取/缓存 JSON 配置
-    │   └── AiNarrativeService.js # AI 文案占位（超时兜底必做，待需求确认）
+    │   └── AiNarrativeService.js # AI 文案/道心评价占位（必须走后端代理保管 key；超时兜底必做）【评审必改3】
     │
     ├── utils/                    # 纯工具函数（无 Phaser 依赖优先）
     │   ├── math.js
@@ -169,7 +172,17 @@ Phaser 里**一个 Scene ≈ 一段完整流程或一块可叠加界面**。中�
 | `WorldMapScene` | 世界舆图：选地点去野外/坊市/秘境。 | 从洞府「外出」 |
 | `BattleScene` | **战斗主场景**：回合循环、指令面板、战报；尽量不直接写养成公式。 | 野外遭遇/副本/切磋 |
 
-> **命名说明**：调研里的「洞府 `/game`」在此对应 `HubScene`；「野外战斗」对应 `BattleScene`。若后续确认以「修仙文字交互」为主、Phaser 偏演出层，仍保留上述场景键，便于替换实现而不改导航流。
+> **命名说明**：调研里的「洞府 `/game`」在此对应 `HubScene`；「野外战斗」对应 `BattleScene`。
+
+### 3.1.1 UI 承载策略：DOM 覆盖层 + Phaser 演出层【评审必改2，定为硬约定】
+
+修仙游戏的界面 90% 是**列表 / 面板 / 文本流**（储物袋 40 格、灵兽资质面板、聊天流、剧情打字机）——Phaser 原生 UI 做这些的成本远高于 HTML/CSS（竞品万界道友即 React+DOM 实现）。因此：
+
+- **Phaser 只负责**：战斗演出、地图画卷、特效、粒子、场景转场动画；
+- **HTML DOM 覆盖层负责**：一切面板 / 列表 / 文本（绝对定位盖在 canvas 上，经 EventBus 与游戏层双向通信，数据仍以 GameState 为唯一真相）；
+- 场景键与导航流（本节场景表）不变——DOM 面板作为各 Scene 的"视图件"挂载，不另起路由。
+
+> 不提前定死这条，每个面板都会在"用 Phaser 硬做还是偷偷写 DOM"之间摇摆，架构会腐化。
 
 ### 3.2 弹层场景（Overlay）
 
@@ -377,7 +390,7 @@ scenes  →  ui / systems / systems / systems
 | 更新频率 | 纯 UI 数字用事件驱动刷新；不要在 `update` 里全量重算属性。 |
 | 资源释放 | `BaseScene.shutdown` 必须解绑 EventBus，防止幽灵监听。 |
 | 战斗与养成分离 | `BattleScene` 只调用 `combat` + 只读快照；突破/炼丹不进战斗帧循环。 |
-| AI / 异步 | 若接文案生成：`AiNarrativeService` 必须带超时、取消与降级文案（调研高峰教训）。 |
+| AI / 异步 | 若接文案生成：`AiNarrativeService` 必须带超时、取消与降级文案（调研高峰教训）。**且必须走轻后端/云函数代理**（API key 服务端保管，前端只收结果；localStorage 单机存档与联网生成是混合模式，影响部署形态）【评审必改3】。 |
 | 结算收束 | `GameState.pendingBattleSettle` + 枢纽红点/全局入口；`ResultOverlay` 确认后才清锁。 |
 | 注释与命名 | 核心文件顶部中文说明「干什么、谁调用」；文件名英文、领域词与调研中文对照表可附在 AGENTS。 |
 
@@ -395,6 +408,10 @@ scenes  →  ui / systems / systems / systems
 | 回合战斗 / 双指令 / 自动战斗 | `systems/combat/` + `BattleScene` | 建议 MVP 核心 |
 | 灵兽捕捉 / 出战 / 图鉴 | `entities/spirit-beast` + `systems/spirit-beast` | 合成深度另表 |
 | 灵兽合成（梦幻向） | `systems/spirit-beast/Fusion.js` | 待确认保底等规则 |
+| **道心/扮演法**（诡秘参考；核心差异化候选） | `systems/daoxin/` + `AiNarrativeService` 行为评价接口 | AI 从玩家行为日志评价"是否合其道"，影响修炼速度/突破成功率【评审必改1】 |
+| **收集图鉴+吞噬合成**（斗破异火榜参考） | `systems/collection/` + `data/tables/codex.json` | 图鉴带排名与完成度；低阶物融合高阶；进度解锁功法形态【评审必改1】 |
+| **周期性世界事件**（遮天生命禁区参考） | `systems/world-events/` | 禁区/黑暗动乱式全服危机；单机首版为定时事件空壳【评审必改1】 |
+| 命格重塑成长线（逆命符重抽） | `systems/stats` + `data/tables/fate.json` 扩展 | 开局命格之外的后天重定义扩展位【评审建议4】 |
 | 炼丹 / 炼器 / 阵纹 | `systems/crafting/` | 待确认 |
 | 灵田 / 坊市 / 拍卖 | `systems/economy/` + 地图数据 | 待确认 |
 | 宗门 / 社交 / 天骄榜 | `services/` + 未来联网层 | 单机首版可空壳 |
