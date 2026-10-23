@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>修仙 · xuxian（暂定名）</title>
+  <style>
+    /* ===== 全局：纸墨风基调 ===== */
+    :root {
+      --paper: #f8f3e6;        /* 宣纸底 */
+      --ink: #1f2933;          /* 墨色 */
+      --ink-light: #5b6670;
+      --crimson: #9e2b25;      /* 印章红（按钮/强调） */
+      --paper-dark: #efe6d0;
+      --border: rgba(31, 41, 51, 0.25);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--paper); }
+    body { font-family: "Noto Serif SC", "Songti SC", "SimSun", serif; color: var(--ink); }
+
+    /* ===== 游戏层与 DOM 覆盖层 ===== */
+    #game-root { position: absolute; inset: 0; }
+    #game-root canvas { display: block; margin: 0 auto; }
+    #dom-layer { position: absolute; inset: 0; pointer-events: none; } /* 面板自身再开 pointer-events */
+
+    /* ===== DOM 面板通用样式（DomLayer 基建的一部分） ===== */
+    .xl-panel {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      pointer-events: auto;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      box-shadow: 0 6px 24px rgba(31, 41, 51, 0.18);
+      padding: 28px 36px;
+      min-width: 320px;
+      text-align: center;
+    }
+    .xl-btn {
+      display: block; width: 100%; margin: 10px 0; padding: 12px 18px;
+      font-family: inherit; font-size: 17px; letter-spacing: 4px;
+      color: var(--paper); background: var(--ink);
+      border: 1px solid var(--ink); cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .xl-btn:hover:not(:disabled) { background: var(--crimson); border-color: var(--crimson); }
+    .xl-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .xl-sub { font-size: 13px; color: var(--ink-light); margin-top: 14px; letter-spacing: 2px; }
+
+    /* ===== Toast 提示 ===== */
+    .xl-toast {
+      position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%);
+      pointer-events: none;
+      background: rgba(31, 41, 51, 0.88); color: var(--paper);
+      padding: 10px 22px; font-size: 15px; letter-spacing: 2px;
+      border-radius: 2px; opacity: 0; transition: opacity .25s;
+      white-space: nowrap;
+    }
+    .xl-toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <!-- Phaser 画布挂载点（演出层：战斗/地图/特效） -->
+  <div id="game-root"></div>
+  <!-- DOM 覆盖层根节点（一切面板/列表/文本，见架构文档 §3.1.1） -->
+  <div id="dom-layer"></div>
+
+  <!-- 技术约定：经典 script + 命名空间（window.Xuxian），禁用 ES modules，
+       保证 file:// 双击直开可用；脚本顺序 = 依赖顺序（config→core→ui→scenes→main） -->
+  <script src="src/assets/vendor/phaser.min.js"></script>
+  <script>window.Xuxian = { config: {}, core: {}, ui: { menus: {} }, scenes: {}, errors: [], bootOk: false };</script>
+  <script src="src/config/constants.js"></script>
+  <script src="src/config/gameConfig.js"></script>
+  <script src="src/core/EventBus.js"></script>
+  <script src="src/core/GameState.js"></script>
+  <script src="src/core/SaveManager.js"></script>
+  <script src="src/core/BaseScene.js"></script>
+  <script src="src/core/DomLayer.js"></script>
+  <script src="src/ui/menus/MainMenu.js"></script>
+  <script src="src/scenes/BootScene.js"></script>
+  <script src="src/scenes/PreloadScene.js"></script>
+  <script src="src/scenes/MainMenuScene.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>

@@ -56,9 +56,11 @@
 
 ## 代码约定
 
-- 不要提交 `.env`、依赖目录、构建产物（见 `.gitignore`）
+- 不要提交 `.env`、依赖目录、构建产物（见 `.gitignore`）；例外：`src/assets/vendor/phaser.min.js` 为锁版本的本地副本（3.80.1），必须提交
+- **经典 `<script>` + 命名空间（`window.Xuxian.*`），禁用 ES modules import**——保证 file:// 双击直开可用；脚本顺序=依赖顺序（index.html 内注明）
 - 换行符统一 LF，缩进统一空格（见 `.editorconfig`）
 - 核心脚本需有简明中文注释（文件职责、关键调用关系）
 - 依赖方向：`scenes → ui/entities/systems → services → core → utils/config`（详见架构文档 §7）
 - 数值与关卡优先配置表（`assets/data/`），避免散落魔法数
+- UI 一律走 DOM 覆盖层（`core/DomLayer.js` 开面板），Phaser 只做演出（架构 §3.1.1 硬约定）
 - 版权：可借鉴设定结构，**勿直接使用原著专有名词**（见 `docs/凡人修仙传-参考素材.md`）
