@@ -6,7 +6,8 @@
 (function () {
   'use strict';
   Xuxian.data.tables.fate = [
-    // ===== 凡品 ×10 =====
+    // ===== 凡品 ×11 =====
+    { id: 'xinShou',     name: '新手保护', tier: '凡', tags: [],           effect: '突破成功率 +1.5%',        flavor: '天道给初入门的道友留了半层薄面。' },
     { id: 'chuXin',     name: '初心不改', tier: '凡', tags: [],           effect: '感悟获取 +5%',           flavor: '心之所向，从未改易。' },
     { id: 'qinNeng',    name: '勤能补拙', tier: '凡', tags: [],           effect: '闭关修为 +3%',           flavor: '别人一遍，我十遍。' },
     { id: 'shanTi',     name: '山野体健', tier: '凡', tags: [],           effect: '气血上限 +20',           flavor: '打小风里雨里，底子厚实。' },

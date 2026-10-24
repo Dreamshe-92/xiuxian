@@ -102,6 +102,82 @@
     .xl-fate-flavor { font-size: 12px; color: var(--ink-light); line-height: 1.5; }
     .xl-btn-ghost { background: transparent; color: var(--ink); }
     .xl-btn-ghost:hover:not(:disabled) { background: var(--paper-dark); color: var(--ink); border-color: var(--ink); }
+
+    /* ===== M2：顶栏状态条 ===== */
+    .xl-statusbar {
+      position: absolute; top: 0; left: 0; right: 0;
+      pointer-events: none;
+      display: flex; align-items: center; gap: 18px;
+      padding: 10px 22px; font-size: 14px;
+      background: linear-gradient(rgba(248,243,230,.95), rgba(248,243,230,.75));
+      border-bottom: 1px solid var(--border); letter-spacing: 1px;
+    }
+    .xl-sb-name { font-size: 17px; font-weight: bold; letter-spacing: 3px; }
+    .xl-sb-item b { color: var(--crimson); font-weight: normal; }
+    .xl-sb-wide { min-width: 220px; }
+    .xl-sb-cult { margin-left: auto; font-size: 13px; }
+    .xl-sb-cult.on { color: var(--crimson); animation: xlPulse 2s infinite; }
+    .xl-sb-cult.off { color: var(--ink-light); }
+    @keyframes xlPulse { 0%,100%{opacity:1} 50%{opacity:.45} }
+
+    /* 进度条 */
+    .xl-bar { display: inline-block; width: 90px; height: 6px; margin-left: 8px;
+      background: var(--paper-dark); border: 1px solid var(--border); vertical-align: middle; }
+    .xl-bar i { display: block; height: 100%; background: var(--crimson); transition: width .3s; }
+    .xl-bar-wide { width: 140px; }
+
+    /* ===== M2：洞府入口 ===== */
+    .xl-hub-head { font-size: 30px; letter-spacing: 14px; margin: 4px 0 6px; }
+    .xl-hub-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 16px; }
+    .xl-hub-entry {
+      border: 1px solid var(--border); padding: 18px 8px 14px; cursor: pointer;
+      background: rgba(255,255,255,.45); transition: border-color .15s, background .15s;
+    }
+    .xl-hub-entry:hover { border-color: var(--crimson); background: var(--paper-dark); }
+    .xl-hub-entry.dis { opacity: .38; cursor: not-allowed; }
+    .xl-hub-label { font-size: 19px; letter-spacing: 4px; }
+    .xl-hub-sub { font-size: 12px; color: var(--ink-light); margin-top: 6px; letter-spacing: 2px; }
+
+    /* ===== M2：修炼室 ===== */
+    .xl-cult-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; }
+    .xl-sheet-title { font-size: 17px; letter-spacing: 4px; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 10px; }
+    .xl-cult-status { font-size: 15px; letter-spacing: 2px; margin-bottom: 8px; }
+    .xl-cult-status.on { color: var(--crimson); }
+    .xl-cult-status.off { color: var(--ink-light); }
+    .xl-rates { font-size: 13px; color: var(--ink-light); display: flex; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 8px; }
+    .xl-rates b { color: var(--ink); }
+    .xl-warn { font-size: 13px; color: var(--crimson); margin: 6px 0; letter-spacing: 1px; }
+    .xl-stage { border: 1px solid var(--border); padding: 8px 12px; margin: 8px 0; cursor: pointer; background: rgba(255,255,255,.4); }
+    .xl-stage:hover:not(.dis) { border-color: var(--crimson); }
+    .xl-stage.dis { opacity: .45; cursor: not-allowed; }
+    .xl-stage-name { font-size: 16px; font-weight: bold; letter-spacing: 2px; }
+    .xl-stage-desc { font-size: 12px; color: var(--ink-light); margin: 3px 0; }
+    .xl-stage-rate b { color: var(--crimson); }
+    .xl-confirm, .xl-result { border: 1px solid var(--crimson); padding: 10px 14px; margin-top: 10px; background: rgba(158,43,37,.04); }
+    .xl-confirm-title, .xl-result-title { font-size: 16px; font-weight: bold; margin-bottom: 6px; }
+    .xl-result.ok { border-color: #2b6e3f; background: rgba(43,110,63,.05); }
+    .xl-result.fail { background: rgba(31,41,51,.04); }
+    .xl-result-line { font-size: 14px; margin-bottom: 6px; }
+    .xl-formula { font-size: 13px; color: var(--ink-light); line-height: 1.8; }
+    .xl-formula b { color: var(--crimson); font-size: 15px; }
+    .xl-narration { font-size: 14px; line-height: 2; margin: 8px 0; text-align: justify; }
+    .xl-alloc-row { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-size: 15px; }
+    .xl-alloc-v { min-width: 70px; }
+    .xl-alloc-btn { width: 28px; height: 28px; border: 1px solid var(--border); background: var(--paper);
+      cursor: pointer; font-size: 16px; line-height: 1; }
+    .xl-alloc-btn:hover:not(:disabled) { border-color: var(--crimson); color: var(--crimson); }
+    .xl-alloc-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    /* ===== M2：道身 ===== */
+    .xl-char-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; text-align: left; }
+    .xl-attr-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 14px; }
+    .xl-attr-row b { min-width: 26px; text-align: right; }
+    .xl-derive { font-size: 13px; color: var(--ink-light); line-height: 1.8; }
+    .xl-fate-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .xl-fate-chip { font-size: 13px; border: 1px solid var(--border); padding: 3px 10px; }
+    .xl-fate-chip i { font-style: normal; font-size: 11px; color: var(--ink-light); margin-left: 4px; }
+    .xl-fate-chip.tier-天 { border-color: var(--crimson); color: var(--crimson); }
+    .xl-fate-chip.tier-灵 { border-color: var(--ink); }
   </style>
 </head>
 <body>
@@ -113,7 +189,7 @@
   <!-- 技术约定：经典 script + 命名空间（window.Xuxian），禁用 ES modules，
        保证 file:// 双击直开可用；脚本顺序 = 依赖顺序（config→core→ui→scenes→main） -->
   <script src="src/assets/vendor/phaser.min.js"></script>
-  <script>window.Xuxian = { config: {}, core: {}, data: { tables: {} }, systems: { creation: {} }, ui: { menus: {}, panels: {} }, scenes: {}, errors: [], bootOk: false };</script>
+  <script>window.Xuxian = { config: {}, core: {}, data: { tables: {}, balance: {} }, systems: { creation: {}, cultivation: {}, stats: {} }, ui: { menus: {}, panels: {}, hud: {} }, scenes: {}, errors: [], bootOk: false };</script>
   <script src="src/config/constants.js"></script>
   <script src="src/config/gameConfig.js"></script>
   <script src="src/core/EventBus.js"></script>
@@ -129,8 +205,17 @@
   <script src="src/systems/creation/HeartIntentParser.js"></script>
   <script src="src/systems/creation/CharacterSeeder.js"></script>
   <script src="src/systems/creation/FateDealer.js"></script>
+  <script src="src/data/balance/cultivation-rates.js"></script>
+  <script src="src/data/balance/breakthrough.js"></script>
+  <script src="src/systems/stats/AttributeCalc.js"></script>
+  <script src="src/systems/stats/RealmProgress.js"></script>
+  <script src="src/systems/cultivation/CultivationState.js"></script>
   <script src="src/ui/menus/MainMenu.js"></script>
   <script src="src/ui/panels/CreationPanel.js"></script>
+  <script src="src/ui/hud/StatusBar.js"></script>
+  <script src="src/ui/panels/CultivationPanel.js"></script>
+  <script src="src/ui/panels/CharacterPanel.js"></script>
+  <script src="src/ui/panels/EchoPanel.js"></script>
   <script src="src/scenes/BootScene.js"></script>
   <script src="src/scenes/PreloadScene.js"></script>
   <script src="src/scenes/MainMenuScene.js"></script>

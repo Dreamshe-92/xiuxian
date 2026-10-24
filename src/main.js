@@ -8,6 +8,18 @@
 
   window.addEventListener('error', (e) => { Xuxian.errors.push(e.message); });
 
+  // 放置游戏离线锚点：页面隐藏/关闭前结算并存档（壁钟引擎的兜底，见 CultivationState）
+  const persistCultivation = () => {
+    try {
+      if (Xuxian.core.GameState.data.player) { // 无档案（如菜单页）不存，防覆盖
+        Xuxian.systems.cultivation.CultivationState.settle(Date.now());
+        Xuxian.core.SaveManager.save();
+      }
+    } catch (e) { /* 静默：存档失败不阻塞关闭 */ }
+  };
+  document.addEventListener('visibilitychange', () => { if (document.hidden) persistCultivation(); });
+  window.addEventListener('beforeunload', persistCultivation);
+
   window.addEventListener('load', () => {
     // 1) DOM 覆盖层基建（先于游戏实例：面板/Toast 随时可用）
     Xuxian.core.DomLayer.init();

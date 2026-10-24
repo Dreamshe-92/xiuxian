@@ -24,6 +24,9 @@
       MENU_SETTINGS: 'menu:settings',
       // 创建（M1）
       CREATE_DONE: 'creation:done',
+      // 修炼（M2）
+      CULT_UPDATED: 'cult:updated',
+      CULT_ECHO: 'cult:echo',
       // 通用 UI
       SHOW_TOAST: 'ui:show-toast',
       GAME_BOOTED: 'game:booted',

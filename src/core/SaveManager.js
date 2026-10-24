@@ -15,9 +15,10 @@
       catch (e) { return false; }
     },
 
-    /** 存档：把 GameState.data 打包写入 */
+    /** 存档：把 GameState.data 打包写入。无玩家档案时拒写（防止菜单页把真存档覆盖成空档） */
     save() {
       const data = Xuxian.core.GameState.data;
+      if (!data.player) return { ok: false, reason: 'refused-empty' };
       data.meta.lastSavedAt = Date.now();
       if (!data.meta.createdAt) data.meta.createdAt = data.meta.lastSavedAt;
       const payload = { v: C().SAVE.SCHEMA_VERSION, t: Date.now(), d: data };
