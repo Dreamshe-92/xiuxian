@@ -18,6 +18,8 @@
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
       },
+      // 放置游戏常态挂后台：不随页面隐藏暂停（离线收益按时间戳结算，不依赖帧循环）
+      disableVisibilityChange: true,
       // 物理引擎：MVP 战斗为回合制演出，暂不需要物理
       physics: { default: 'arcade', arcade: { debug: false } },
     }, overrides || {});

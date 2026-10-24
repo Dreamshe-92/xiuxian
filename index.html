@@ -55,6 +55,53 @@
       white-space: nowrap;
     }
     .xl-toast.show { opacity: 1; }
+
+    /* ===== 凝气篇（创建面板） ===== */
+    .xl-panel { max-width: min(860px, 92vw); }
+    .xl-step-tag { font-size: 13px; color: var(--crimson); letter-spacing: 4px; margin-bottom: 8px; }
+    .xl-hint { font-size: 14px; color: var(--ink-light); margin: 10px 0 12px; letter-spacing: 1px; }
+    .xl-textarea {
+      width: 100%; padding: 12px; font-family: inherit; font-size: 16px; line-height: 1.7;
+      background: var(--paper-dark); color: var(--ink); border: 1px solid var(--border);
+      resize: none; letter-spacing: 1px;
+    }
+    .xl-textarea:focus { outline: none; border-color: var(--crimson); }
+    .xl-counter { text-align: right; font-size: 12px; color: var(--ink-light); margin: 4px 0 8px; }
+
+    .xl-forge-grid { display: flex; gap: 18px; text-align: left; }
+    .xl-forge-grid .xl-sheet { flex: 1.2; min-width: 0; }
+    .xl-forge-grid .xl-fates { flex: 1; min-width: 0; }
+    .xl-sheet { border: 1px solid var(--border); padding: 14px 16px; background: rgba(255,255,255,.35); }
+    .xl-row { font-size: 15px; margin: 7px 0; line-height: 1.6; }
+    .xl-label { display: inline-block; min-width: 3.2em; color: var(--ink-light); font-size: 13px; }
+    .xl-sub-inline { font-size: 12px; color: var(--ink-light); margin-left: 6px; }
+    .xl-story { font-size: 14px; line-height: 1.9; color: var(--ink); margin: 10px 0; padding: 10px 12px;
+      background: var(--paper-dark); border-left: 3px solid var(--border); }
+    .xl-comment { font-size: 13px; color: var(--ink-light); font-style: italic; margin: 10px 0; line-height: 1.8; }
+    .xl-name-input {
+      font-family: inherit; font-size: 16px; color: var(--ink);
+      background: transparent; border: none; border-bottom: 1px dashed var(--border);
+      padding: 2px 4px; width: 9em;
+    }
+    .xl-name-input:focus { outline: none; border-bottom-color: var(--crimson); }
+
+    .xl-fates-title { font-size: 15px; letter-spacing: 2px; margin-bottom: 10px; }
+    .xl-fate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .xl-fate-card {
+      border: 1px solid var(--border); padding: 9px 11px; cursor: pointer; background: rgba(255,255,255,.4);
+      transition: border-color .12s, background .12s;
+    }
+    .xl-fate-card:hover { background: var(--paper-dark); }
+    .xl-fate-card.tier-fan { border-left: 3px solid #8a929b; }
+    .xl-fate-card.tier-ling { border-left: 3px solid var(--ink); }
+    .xl-fate-card.tier-tian { border-left: 3px solid var(--crimson); }
+    .xl-fate-card.picked { border-color: var(--crimson); background: rgba(158, 43, 37, 0.08); }
+    .xl-fate-name { font-size: 15px; font-weight: bold; }
+    .xl-fate-tier { font-size: 11px; color: var(--ink-light); margin-left: 6px; font-weight: normal; }
+    .xl-fate-effect { font-size: 13px; color: var(--crimson); margin: 4px 0 2px; }
+    .xl-fate-flavor { font-size: 12px; color: var(--ink-light); line-height: 1.5; }
+    .xl-btn-ghost { background: transparent; color: var(--ink); }
+    .xl-btn-ghost:hover:not(:disabled) { background: var(--paper-dark); color: var(--ink); border-color: var(--ink); }
   </style>
 </head>
 <body>
@@ -66,7 +113,7 @@
   <!-- 技术约定：经典 script + 命名空间（window.Xuxian），禁用 ES modules，
        保证 file:// 双击直开可用；脚本顺序 = 依赖顺序（config→core→ui→scenes→main） -->
   <script src="src/assets/vendor/phaser.min.js"></script>
-  <script>window.Xuxian = { config: {}, core: {}, ui: { menus: {} }, scenes: {}, errors: [], bootOk: false };</script>
+  <script>window.Xuxian = { config: {}, core: {}, data: { tables: {} }, systems: { creation: {} }, ui: { menus: {}, panels: {} }, scenes: {}, errors: [], bootOk: false };</script>
   <script src="src/config/constants.js"></script>
   <script src="src/config/gameConfig.js"></script>
   <script src="src/core/EventBus.js"></script>
@@ -74,10 +121,21 @@
   <script src="src/core/SaveManager.js"></script>
   <script src="src/core/BaseScene.js"></script>
   <script src="src/core/DomLayer.js"></script>
+  <script src="src/data/tables/names.js"></script>
+  <script src="src/data/tables/background-fragments.js"></script>
+  <script src="src/data/tables/spirit-roots.js"></script>
+  <script src="src/data/tables/fate.js"></script>
+  <script src="src/data/tables/intent-keywords.js"></script>
+  <script src="src/systems/creation/HeartIntentParser.js"></script>
+  <script src="src/systems/creation/CharacterSeeder.js"></script>
+  <script src="src/systems/creation/FateDealer.js"></script>
   <script src="src/ui/menus/MainMenu.js"></script>
+  <script src="src/ui/panels/CreationPanel.js"></script>
   <script src="src/scenes/BootScene.js"></script>
   <script src="src/scenes/PreloadScene.js"></script>
   <script src="src/scenes/MainMenuScene.js"></script>
+  <script src="src/scenes/StoryScene.js"></script>
+  <script src="src/scenes/HubScene.js"></script>
   <script src="src/main.js"></script>
 </body>
 </html>

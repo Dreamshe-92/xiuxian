@@ -22,6 +22,8 @@
       MENU_START: 'menu:start',
       MENU_CONTINUE: 'menu:continue',
       MENU_SETTINGS: 'menu:settings',
+      // 创建（M1）
+      CREATE_DONE: 'creation:done',
       // 通用 UI
       SHOW_TOAST: 'ui:show-toast',
       GAME_BOOTED: 'game:booted',
