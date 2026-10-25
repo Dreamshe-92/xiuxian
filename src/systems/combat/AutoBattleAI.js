@@ -12,26 +12,23 @@
     decide(session) {
       const p = session.player;
       const enemies = session.activeEnemies;
+      const T2 = T();
+      const weakest = enemies.reduce((lo, e) => (e.hp < lo.hp ? e : lo), enemies[0]);
 
-      // ① 血线防御
-      if (p.hp / p.hpMax < 0.3) return { type: 'defend' };
+      // ① 残局捕捉：只剩最后一只且可捕捉、血压到 65% 以下再出手（清场前抓=挨打白抓）
+      if (enemies.length === 1 && session.catchable(weakest) && weakest.hp / weakest.hpMax < 0.65
+          && p.mp >= T2.catchMpCost) {
+        return { type: 'catch', target: weakest };
+      }
 
-      // ② 捕捉时机：可捕捉目标且压到半血以下
-      const catchTarget = enemies.find((e) => session.catchable(e) && e.hp / e.hpMax < 0.5);
-      if (catchTarget && p.mp >= T().catchMpCost) return { type: 'catch', target: catchTarget };
-
-      // ③ 神通（法力足够）
-      const blade = T().playerSkills.find((s) => s.id === 'spirit_blade');
+      // ② 神通（法力足够，打血最低者速杀减伤）
+      const blade = T2.playerSkills.find((s) => s.id === 'spirit_blade');
       if (blade && p.mp >= blade.mpCost) {
-        const t = enemies.reduce((lo, e) => (e.hp < lo.hp ? e : lo), enemies[0]);
-        return { type: 'skill', skillId: blade.id, target: t };
+        return { type: 'skill', skillId: blade.id, target: weakest };
       }
 
-      // ④ 普攻（打血量最低）
-      if (enemies.length) {
-        const t = enemies.reduce((lo, e) => (e.hp < lo.hp ? e : lo), enemies[0]);
-        return { type: 'attack', target: t };
-      }
+      // ③ 普攻（打血量最低者——击杀一个少一份受击；可捕捉的留到最后压血再抓）
+      if (enemies.length) return { type: 'attack', target: weakest };
       return { type: 'defend' };
     },
   };

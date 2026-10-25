@@ -24,6 +24,8 @@
     create() {
       const { width, height } = this.scale;
       this.cameras.main.setBackgroundColor(C.VIEW.BG_PAPER);
+      // 进场清场：战斗残留面板兜底关闭（防 battle-log/result 残留叠层）
+      ['battle-bar', 'battle-log', 'battle-result'].forEach((id) => Xuxian.core.DomLayer.closePanel(id));
 
       // 水墨氛围：中央淡墨大圆 + 顶部淡山影（后续版本换真背景图）
       const g = this.add.graphics();

@@ -1,6 +1,6 @@
 /**
- * StoryScene.js — 剧情场景（M1 承载"凝气篇"创建流程）
- * 职责：纸底氛围 + 打开创建面板；CREATE_DONE 事件 → 写入 GameState、首次存档 → 入世（进 HubScene）。
+ * StoryScene.js — 剧情场景（M1 承载"凝气篇"创建流程 + M5 入世引子）
+ * 职责：纸底氛围 + 入世引子幕 + 创建面板；CREATE_DONE → 写档 → 入世（进 HubScene）。
  */
 (function () {
   'use strict';
@@ -20,10 +20,36 @@
       g.lineStyle(1, 0x1f2933, 0.15);
       g.strokeCircle(width / 2, height / 2, 244);
 
-      // 打开凝气篇面板（幂等；绑定 this——DomLayer 以裸函数调用 renderFn）
-      Xuxian.core.DomLayer.openPanel('creation', (el, api) => Xuxian.ui.panels.CreationPanel.render(el, api));
+      this._bindCreation();
+      if (Xuxian.core.GameState.data.player) {
+        // 续档误入：已有角色，直接去洞府
+        this.scene.start(C.SCENES.HUB);
+        return;
+      }
+      Xuxian.core.DomLayer.openPanel('story-intro', (el, api) => this._renderIntro(el, api));
+    }
 
-      // 入世：组装档案 → 重置 GameState → 首次存档 → 进洞府
+    /** 序幕：入世引子，落笔后进凝气创建 */
+    _renderIntro(el, api) {
+      el.innerHTML = [
+        '<div class="xl-step-tag"><span class="xl-kicker">序 · 入世</span></div>',
+        '<div class="xl-intro-text">',
+        '<p>天地为炉，众生为炭。</p>',
+        '<p>有人说，仙路是攒出来的：一缕灵气、一寸修为、一场场赌上性命的破关。</p>',
+        '<p>也有人说，仙路是选出来的——落笔之际，道已定形。</p>',
+        '<p class="xl-intro-em">现在，轮到你落笔。</p>',
+        '</div>',
+        '<button class="xl-btn" id="intro-go">提 笔 · 凝 气</button>',
+        '<div class="xl-sub">写下第一句心念，此世的根骨、机缘与道途皆由它生。</div>',
+      ].join('');
+      el.querySelector('#intro-go').addEventListener('click', () => {
+        Xuxian.core.DomLayer.closePanel('story-intro');
+        Xuxian.core.DomLayer.openPanel('creation', (el2, api2) => Xuxian.ui.panels.CreationPanel.render(el2, api2));
+      });
+    }
+
+    /** 入世：组装档案 → 重置 GameState → 首次存档 → 进洞府 */
+    _bindCreation() {
       this.bindEvent(C.EVENTS.CREATE_DONE, (player) => {
         Xuxian.core.GameState.reset(true);      // 清空旧档状态（保留设置）
         Xuxian.core.GameState.data.player = player;
@@ -42,7 +68,7 @@
     }
 
     shutdown() {
-      Xuxian.core.DomLayer.closePanel('creation');
+      ['story-intro', 'creation'].forEach((id) => Xuxian.core.DomLayer.closePanel(id));
     }
   }
 

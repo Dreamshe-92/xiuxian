@@ -15,7 +15,7 @@
 
   /** 伤害公式：atk×随机(0.85~1.15) − def×0.6，下限 1 */
   function resolveDamage(attacker, defender) {
-    const raw = attacker.atk * (0.85 + Math.random() * 0.3) - defender.def * 0.6;
+    const raw = attacker.atk * (0.85 + Math.random() * 0.3) - defender.def * 0.85;
     return Math.max(1, Math.round(raw));
   }
 
@@ -163,9 +163,9 @@
       // 战后损耗保留：回写当前气血法力（败北保底 10% 防 hard-stuck；灵泉可恢复）
       const gs = Xuxian.core.GameState.data;
       gs.resources.hpCurrent = outcome === 'defeat'
-        ? Math.max(1, Math.round(this.player.hpMax * 0.1))
+        ? Math.max(Math.round(this.player.hpMax * 0.3), this.player.hp)
         : this.player.hp;
-      gs.resources.mpCurrent = this.player.mp;
+      gs.resources.mpCurrent = outcome === 'defeat' ? this.player.mpMax : this.player.mp;
 
       // 奖励：胜利给修为感悟+灵石；成功逃跑保留捕捉；失败/放弃全部丢失（调研规则）
       const keepCaptures = (outcome === 'victory' || outcome === 'flee');
