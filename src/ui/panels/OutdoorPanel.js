@@ -27,7 +27,7 @@
         <div class="xl-row"><span class="xl-label">首发灵兽</span>${starter ? starter.name + '（Lv.' + starter.level + '）自动入场' : '尚无灵兽——捕捉第一只伙伴吧'}</div>
         <div id="od-group"></div>
         <div style="display:flex; gap:10px; margin-top:8px;">
-          <button class="xl-btn xl-btn-ghost" id="od-back" style="flex:0 0 110px;">回洞府</button>
+          <button class="xl-btn xl-btn--ghost" id="od-back" style="flex:0 0 110px;">回洞府</button>
           <button class="xl-btn" id="od-search">寻 觅 灵 兽</button>
           <button class="xl-btn" id="od-fight" ${this._group ? '' : 'disabled'}>开 战 捕 捉</button>
         </div>

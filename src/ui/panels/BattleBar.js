@@ -34,7 +34,7 @@
           </div>
           <div id="bb-status" class="xl-sub" style="margin:6px 0 0;">选择指令${this._needsTarget() ? '与目标' : ''}，然后出招。</div>
           <button class="xl-btn" id="bb-go" disabled>出 招</button>
-          <button class="xl-btn xl-btn-ghost" id="bb-abandon" style="font-size:13px; padding:6px;">放弃战斗（保留损耗，捕捉全失）</button>
+          <button class="xl-btn xl-btn--ghost" id="bb-abandon" style="font-size:13px; padding:6px;">放弃战斗（保留损耗，捕捉全失）</button>
         </div>
       `;
       el.querySelectorAll('.xl-cmd').forEach((b) => b.addEventListener('click', () => {

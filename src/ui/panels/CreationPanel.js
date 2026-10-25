@@ -36,8 +36,8 @@
     /** ① 以心念唤道 */
     _renderIntent(el) {
       el.innerHTML = `
-        <div class="xl-step-tag">凝气篇 · 一</div>
-        <h2 style="font-size:24px; letter-spacing:8px;">以 心 念 唤 道</h2>
+        <div class="xl-step-tag"><span class="xl-kicker">凝气篇 · 一</span></div>
+        <h2 class="xl-heading xl-heading--sm">以 心 念 唤 道</h2>
         <p class="xl-hint">以一句心念描摹真身，凝气成形后参阅天机。</p>
         <textarea class="xl-textarea" maxlength="200" rows="3"
           placeholder="例：我想成为一位靠炼丹逆袭的废柴少主……">${this._state.intent}</textarea>
@@ -64,8 +64,8 @@
       const sk = s.skeleton;
       const root = sk.spiritRoot;
       el.innerHTML = `
-        <div class="xl-step-tag">凝气篇 · 二</div>
-        <h2 style="font-size:24px; letter-spacing:8px; margin-bottom:10px;">道 身 初 成</h2>
+        <div class="xl-step-tag"><span class="xl-kicker">凝气篇 · 二</span></div>
+        <h2 class="xl-heading xl-heading--sm">道 身 初 成</h2>
         <div class="xl-forge-grid">
           <div class="xl-sheet">
             <div class="xl-row"><span class="xl-label">姓名</span>
@@ -77,9 +77,9 @@
             <div class="xl-row"><span class="xl-label">根基</span>六维皆 15 · 待分配 <b>${sk.pendingPoints}</b> 点（入世后分配）</div>
             <div class="xl-row"><span class="xl-label">年岁</span>${sk.age} 岁 · 寿元上限约 ${sk.lifespanMax} 载</div>
             <div class="xl-comment">天道评语：${root.commentary}</div>
-            <button class="xl-btn xl-btn-ghost" id="btn-reroll">重 凝（骨架无限随）</button>
+            <button class="xl-btn xl-btn--ghost" id="btn-reroll">重 凝（骨架无限随）</button>
           </div>
-          <div class="xl-fates">
+          <div class="xl-sheet xl-sheet--quiet xl-fates">
             <div class="xl-fates-title">先天命格 · 已选 <span id="fate-n">0</span> / 3</div>
             <div class="xl-fate-grid">
               ${s.fateCards.map((f) => `
@@ -91,8 +91,8 @@
             </div>
           </div>
         </div>
-        <div style="display:flex; gap:10px; margin-top:6px;">
-          <button class="xl-btn xl-btn-ghost" id="btn-back" style="flex:0 0 120px;">改心念</button>
+        <div class="xl-btn-row">
+          <button class="xl-btn xl-btn--ghost xl-btn--compact" id="btn-back">改心念</button>
           <button class="xl-btn" id="btn-next" disabled>择定命格 · 参阅道身</button>
         </div>
       `;
@@ -139,8 +139,8 @@
       const root = sk.spiritRoot;
       const picked = s.fateCards.filter((f) => s.fateChoice.includes(f.id));
       el.innerHTML = `
-        <div class="xl-step-tag">凝气篇 · 三</div>
-        <h2 style="font-size:24px; letter-spacing:8px; margin-bottom:12px;">以此真身入世？</h2>
+        <div class="xl-step-tag"><span class="xl-kicker">凝气篇 · 三</span></div>
+        <h2 class="xl-heading xl-heading--sm">以此真身入世？</h2>
         <div class="xl-sheet" style="text-align:left;">
           <div class="xl-row"><span class="xl-label">姓名</span><b>${sk.name}</b></div>
           <div class="xl-row"><span class="xl-label">境界</span>炼气 · 初期</div>
@@ -149,9 +149,9 @@
           <div class="xl-row"><span class="xl-label">命格</span>${picked.map((f) => f.name + '（' + f.tier + '）').join('、')}</div>
           <div class="xl-row"><span class="xl-label">心念</span>「${s.intent}」</div>
         </div>
-        <div style="display:flex; gap:10px; margin-top:6px;">
-          <button class="xl-btn xl-btn-ghost" id="btn-back2" style="flex:0 0 120px;">返回调整</button>
-          <button class="xl-btn" id="btn-enter">落 字 入 世</button>
+        <div class="xl-btn-row">
+          <button class="xl-btn xl-btn--ghost xl-btn--compact" id="btn-back2">返回调整</button>
+          <button class="xl-btn xl-btn--seal" id="btn-enter">落 字 入 世</button>
         </div>
       `;
       el.querySelector('#btn-back2').addEventListener('click', () => { s.step = 2; this._renderStep(); });

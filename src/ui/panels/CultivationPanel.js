@@ -26,13 +26,13 @@
     _full() {
       const el = this._el;
       el.innerHTML = `
-        <div class="xl-step-tag">洞府 · 修炼室</div>
+        <div class="xl-step-tag"><span class="xl-kicker">洞府 · 修炼室</span></div>
         <div id="cp-close-zone"></div>
         <div class="xl-cult-grid">
           <div class="xl-sheet" id="cp-cult"></div>
           <div class="xl-sheet" id="cp-break"></div>
         </div>
-        <div class="xl-sheet" id="cp-extra" style="margin-top:12px;"></div>
+        <div class="xl-sheet xl-sheet--quiet" id="cp-extra" style="margin-top:14px;"></div>
       `;
       this._renderCult();
       this._renderBreak();
@@ -80,7 +80,7 @@
       const qiOk = Xuxian.core.GameState.data.resources.qi >= Xuxian.data.balance.breakthrough.qiCost;
       box.innerHTML = `
         <div class="xl-sheet-title">突 破 <span class="xl-sub-inline">消耗 ${Xuxian.data.balance.breakthrough.qiCost} 灵气</span></div>
-        <div id="cp-stage-list">
+        <div class="xl-break-list" id="cp-stage-list">
           ${stages.map((st) => {
             const ev = RP().evaluate(st.id);
             return `
@@ -121,9 +121,9 @@
             = <b>${(ev.rate * 100).toFixed(1)}%</b>
           </div>
           <div class="xl-sub">失败：修为 ×0.85、感悟 −20；连败 3 次生心魔。</div>
-          <div style="display:flex; gap:8px;">
-            <button class="xl-btn xl-btn-ghost" id="cp-cancel" style="flex:1;">再做准备</button>
-            <button class="xl-btn" id="cp-go" style="flex:1;">破 关 ！</button>
+          <div class="xl-btn-row">
+            <button class="xl-btn xl-btn--ghost" id="cp-cancel">再做准备</button>
+            <button class="xl-btn xl-btn--seal" id="cp-go">破 关 ！</button>
           </div>
         </div>
       `;
@@ -168,9 +168,9 @@
         html += `
           <div class="xl-sheet-title" style="margin-top:10px;">属性点分配 <span class="xl-sub-inline">待分配 <b id="cp-pts">${s.pendingPoints}</b> 点</span></div>
           <div class="xl-alloc" id="cp-alloc"></div>
-          <div style="display:flex; gap:8px;">
-            <button class="xl-btn xl-btn-ghost" id="cp-alloc-reset" style="flex:1;">重置</button>
-            <button class="xl-btn" id="cp-alloc-ok" style="flex:1;">确认分配</button>
+          <div class="xl-btn-row">
+            <button class="xl-btn xl-btn--ghost" id="cp-alloc-reset">重置</button>
+            <button class="xl-btn" id="cp-alloc-ok">确认分配</button>
           </div>
         `;
       }
@@ -199,7 +199,7 @@
         box.querySelectorAll('.xl-alloc-row').forEach((row) => {
           const k = row.dataset.k;
           row.querySelector('.xl-alloc-v').textContent = s.attributes[k] + (this._alloc[k] ? ` +${this._alloc[k]}` : '');
-          row.querySelector('.xl-alloc-add').disabled = remain <= 0;
+          row.querySelector('.xl-alloc-btn.add').disabled = remain <= 0;
         });
         const pts = this._el.querySelector('#cp-pts'); if (pts) pts.textContent = remain;
         this._el.querySelector('#cp-alloc-ok').disabled = remain !== 0;

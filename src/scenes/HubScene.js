@@ -51,13 +51,14 @@
     _renderHubPanel(el) {
       const p = Xuxian.core.GameState.data.player || {};
       el.innerHTML = `
-        <div class="xl-hub-head">洞 府</div>
+        <div class="xl-hub-head"><span class="xl-heading">洞 府</span></div>
         <div class="xl-sub" style="margin-top:0;">石门半掩，纸窗透白。${p.name ? p.name + '道友，' : ''}今日修行，从何处起？</div>
         <div class="xl-hub-grid">
-          ${ENTRIES.map((e) => `
-            <div class="xl-hub-entry ${e.usable ? '' : 'dis'}" data-id="${e.id}">
+          ${ENTRIES.map((e, index) => `
+            <div class="xl-hub-entry ${e.usable ? '' : 'dis'}" data-id="${e.id}" data-num="${String(index + 1).padStart(2, '0')}">
               <div class="xl-hub-label">${e.label}</div>
               <div class="xl-hub-sub">${e.sub}</div>
+              ${e.usable ? '' : '<div class="xl-hub-state">待 启</div>'}
             </div>`).join('')}
         </div>
       `;

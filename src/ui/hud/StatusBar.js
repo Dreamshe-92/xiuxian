@@ -17,11 +17,11 @@
       el.className = 'xl-statusbar';
       el.innerHTML = `
         <span class="xl-sb-name" id="sb-name">—</span>
-        <span class="xl-sb-item">境界 <b id="sb-realm">—</b></span>
-        <span class="xl-sb-item xl-sb-wide">修为 <b id="sb-xw">0/0</b><span class="xl-bar"><i id="sb-xw-bar"></i></span></span>
-        <span class="xl-sb-item">感悟 <b id="sb-gw">0/0</b></span>
-        <span class="xl-sb-item">🍃 <b id="sb-qi">0/0</b></span>
-        <span class="xl-sb-item">⏳ <b id="sb-life">—</b></span>
+        <span class="xl-sb-item"><span>境界</span><b id="sb-realm">—</b></span>
+        <span class="xl-sb-item xl-sb-wide"><span>修为</span><b id="sb-xw">0/0</b><span class="xl-bar"><i id="sb-xw-bar"></i></span></span>
+        <span class="xl-sb-item"><span>感悟</span><b id="sb-gw">0/0</b></span>
+        <span class="xl-sb-item"><span>灵气</span><b id="sb-qi">0/0</b></span>
+        <span class="xl-sb-item"><span>寿元</span><b id="sb-life">—</b></span>
         <span class="xl-sb-cult" id="sb-cult"></span>
       `;
       document.getElementById('dom-layer').appendChild(el);

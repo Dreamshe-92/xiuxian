@@ -18,12 +18,12 @@
       const hasSave = Xuxian.core.SaveManager.hasSave();
 
       el.innerHTML = `
-        <h1 style="font-size:34px; letter-spacing:12px; margin-bottom:6px;">修 仙</h1>
+        <h1 class="xl-heading">修 仙</h1>
         <div class="xl-sub" style="margin-top:0;">xuxian · 第一幕（MVP）</div>
         <div style="height:18px;"></div>
-        <button class="xl-btn" data-act="start">新 开 局</button>
+        <button class="xl-btn xl-btn--seal" data-act="start">新 开 局</button>
         <button class="xl-btn" data-act="continue" ${hasSave ? '' : 'disabled'}>继 续</button>
-        <button class="xl-btn" data-act="settings" disabled>设 置</button>
+        <button class="xl-btn xl-btn--ghost" data-act="settings" disabled>设 置</button>
         <div class="xl-sub">浏览器直开 · 存档在本机</div>
       `;
 
