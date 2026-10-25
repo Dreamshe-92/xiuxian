@@ -13,6 +13,7 @@
     constructor() { super(C.SCENES.BATTLE); }
 
     init(data) {
+      super.init(); // BaseScene 清理钩子（防泄漏）必须挂上
       this.session = data && data.session ? data.session : null;
     }
 
@@ -31,7 +32,8 @@
       this._layoutUnits();
       this._roundBanner('第 1 回合');
 
-      // 指令条 + 战报（DOM）
+      // 指令条 + 战报（DOM）；顺手收掉洞府面板防叠层
+      Xuxian.core.DomLayer.closePanel('hub');
       Xuxian.core.DomLayer.openPanel('battle-bar', (el, api) => Xuxian.ui.panels.BattleBar.render(el, api, this.session));
       Xuxian.core.DomLayer.openPanel('battle-log', (el, api) => Xuxian.ui.panels.BattleLogPanel.render(el, api, this.session));
 

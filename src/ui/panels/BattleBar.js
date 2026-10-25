@@ -71,9 +71,12 @@
     _sync() {
       const go = this._el.querySelector('#bb-go');
       const st = this._el.querySelector('#bb-status');
-      const ready = this._cmd && (!this._needsTarget() || this._target);
+      // 自动模式：无需选指令（AI 决策），出招恒可用
+      const ready = this._session.autoMode || (this._cmd && (!this._needsTarget() || this._target));
       go.disabled = !ready;
-      if (this._cmd === 'catch' && this._target && !this._session.catchable(this._target)) {
+      if (this._session.autoMode) {
+        st.textContent = '自动战斗中 —— 出招后逐回合自动推进';
+      } else if (this._cmd === 'catch' && this._target && !this._session.catchable(this._target)) {
         st.textContent = '⚠ 此灵兽超携带上限，无法捕捉（换目标或攻击）';
         go.disabled = true;
       } else if (ready) {
@@ -83,13 +86,20 @@
 
     _go() {
       const s = this._session;
-      const draft = { type: this._cmd };
-      if (this._needsTarget()) draft.target = this._target;
-      if (this._cmd === 'skill') draft.skillId = 'spirit_blade';
-      s.setDraft(draft);
+      if (!s.autoMode) {
+        const draft = { type: this._cmd };
+        if (this._needsTarget()) draft.target = this._target;
+        if (this._cmd === 'skill') draft.skillId = 'spirit_blade';
+        s.setDraft(draft);
+      }
       // 交给场景推进（含演出节奏）
       Xuxian.game.scene.getScene('BattleScene').advance();
-      if (!s.over) this._draw(); // 面板重绘为下一回合；结束则场景会关面板
+      if (s.over) return; // 场景会开结算面板
+      this._draw();
+      // 自动模式：逐回合链式推进（真挂机）
+      if (s.autoMode) {
+        setTimeout(() => { if (!s.over && this._el && this._el.isConnected) this._go(); }, 700);
+      }
     },
   };
 })();

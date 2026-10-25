@@ -27,6 +27,10 @@
       // 修炼（M2）
       CULT_UPDATED: 'cult:updated',
       CULT_ECHO: 'cult:echo',
+      // 战斗（M3）
+      BATTLE_LOG: 'battle:log',
+      BATTLE_STATE: 'battle:state',
+      BATTLE_OVER: 'battle:over',
       // 通用 UI
       SHOW_TOAST: 'ui:show-toast',
       GAME_BOOTED: 'game:booted',

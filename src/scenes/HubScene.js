@@ -12,9 +12,9 @@
   const ENTRIES = [
     { id: 'cultivation', label: '修 炼 室', sub: '闭关 · 突破', usable: true },
     { id: 'character',   label: '道 身',   sub: '灵根 · 命格 · 属性', usable: true },
-    { id: 'inventory',   label: '储物袋',  sub: 'M3 开放', usable: false },
-    { id: 'beasts',      label: '灵兽袋',  sub: 'M3 开放', usable: false },
-    { id: 'outdoor',     label: '外 出',   sub: 'M3 开放', usable: false },
+    { id: 'inventory',   label: '储物袋',  sub: 'M4 开放', usable: false },
+    { id: 'beasts',      label: '灵兽袋',  sub: '名册 · 出战 · 首发', usable: true },
+    { id: 'outdoor',     label: '外 出',   sub: '青溪坡 · 寻觅 · 战斗', usable: true },
   ];
 
   class HubScene extends Xuxian.core.BaseScene {
@@ -69,6 +69,10 @@
             Xuxian.core.DomLayer.openPanel('cultivation', (el2, api2) => Xuxian.ui.panels.CultivationPanel.render(el2, api2));
           } else if (id === 'character') {
             Xuxian.core.DomLayer.openPanel('character', (el2, api2) => Xuxian.ui.panels.CharacterPanel.render(el2, api2));
+          } else if (id === 'beasts') {
+            Xuxian.core.DomLayer.openPanel('beasts', (el2, api2) => Xuxian.ui.panels.BeastBagPanel.render(el2, api2));
+          } else if (id === 'outdoor') {
+            Xuxian.core.DomLayer.openPanel('outdoor', (el2, api2) => Xuxian.ui.panels.OutdoorPanel.render(el2, api2));
           }
         });
       });
@@ -79,7 +83,7 @@
       Xuxian.systems.cultivation.CultivationState.settle(Date.now());
       Xuxian.core.SaveManager.save();
       Xuxian.ui.hud.StatusBar.unmount();
-      ['hub', 'cultivation', 'character', 'echo'].forEach((id) => Xuxian.core.DomLayer.closePanel(id));
+      ['hub', 'cultivation', 'character', 'beasts', 'outdoor', 'echo'].forEach((id) => Xuxian.core.DomLayer.closePanel(id));
     }
   }
 

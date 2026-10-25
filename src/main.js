@@ -32,6 +32,7 @@
         Xuxian.scenes.MainMenuScene,
         Xuxian.scenes.StoryScene,
         Xuxian.scenes.HubScene,
+        Xuxian.scenes.BattleScene,
       ],
     }));
   });
