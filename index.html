@@ -406,7 +406,34 @@
     .xl-hex-reading { font-size: 14px; line-height: 2; }
 
     /* ===== M3：战斗（指令条/战报/结算）与灵兽袋 ===== */
-    .xl-battlebar { text-align: center; }
+    /* 指令条：底部全宽横条（不遮单位卡） */
+    [data-panel-id="battle-bar"] {
+      left: 0; right: 0; bottom: 0; top: auto; transform: none;
+      width: auto; max-width: none; min-width: 0;
+      padding: 12px 28px 14px; border-radius: 18px 18px 0 0;
+      border-bottom: none; box-shadow: 0 -6px 24px rgba(74,53,25,.14);
+    }
+    .xl-battlebar {
+      display: grid; max-width: 1080px; margin: 0 auto;
+      grid-template-columns: 1fr 168px;
+      grid-template-areas: "cmds go" "targets abandon" "status status";
+      gap: 8px 22px; align-items: center;
+    }
+    .xl-battlebar .xl-cmd-row { grid-area: cmds; }
+    .xl-battlebar .xl-target-row { grid-area: targets; justify-content: flex-start; }
+    .xl-battlebar #bb-go { grid-area: go; height: 100%; min-height: 58px; font-size: 19px; letter-spacing: 6px; }
+    .xl-battlebar .xl-battlebar-abandon { grid-area: abandon; font-size: 12px; padding: 5px 8px; }
+    .xl-battlebar .xl-battlebar-status { grid-area: status; text-align: left; font-size: 13px; color: var(--ink-muted); }
+    /* 战报：右上竖条（顶栏之下） */
+    [data-panel-id="battle-log"] {
+      left: auto; right: 14px; bottom: auto; top: 74px; transform: none;
+      width: 292px; max-width: none; min-width: 0; padding: 10px 12px;
+    }
+    .xl-battlelog {
+      position: static; width: auto; max-height: 300px;
+      border: none; padding: 0; box-shadow: none; background: transparent;
+    }
+    .xl-battlelog-lines { max-height: 230px; }
     .xl-cmd-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
     .xl-cmd {
       font-family: inherit; font-size: 15px; letter-spacing: 3px; cursor: pointer;
@@ -427,15 +454,9 @@
     .xl-target.sel { border-color: var(--seal-dark); color: var(--seal-dark); background: rgba(160,59,44,.06); }
     .xl-target i { font-style: normal; color: var(--ink-muted); font-size: 11px; margin-left: 4px; }
 
-    .xl-battlelog {
-      position: absolute; right: 14px; bottom: 14px; width: 300px; max-height: 260px;
-      pointer-events: auto; text-align: left;
-      background: rgba(253,248,234,.9); border: 1px solid var(--line-strong);
-      padding: 10px 12px; box-shadow: 0 4px 12px rgba(74,53,25,.08);
-    }
     .xl-battlelog-title { font-size: 13px; letter-spacing: 4px; color: var(--ink-soft);
       border-bottom: 1px solid var(--line); padding-bottom: 5px; margin-bottom: 6px; }
-    .xl-battlelog-lines { max-height: 190px; overflow-y: auto; }
+    .xl-battlelog-lines { max-height: 230px; overflow-y: auto; }
     .xl-battlelog-line { font-size: 12.5px; line-height: 1.8; color: var(--ink-soft); }
 
     .xl-beast-list { margin-top: 10px; text-align: left; max-height: 300px; overflow-y: auto; }

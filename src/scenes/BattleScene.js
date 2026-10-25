@@ -22,15 +22,15 @@
       this.cameras.main.setBackgroundColor(C.VIEW.BG_PAPER);
       this.unitViews = new Map();
 
-      // 战场底：一块淡墨演武场
+      // 战场底：淡墨演武场（上移对齐单位站位）
       const g = this.add.graphics();
-      g.fillStyle(0x1f2933, 0.05); g.fillEllipse(width / 2, height * 0.55, 1000, 420);
-      g.lineStyle(1, 0x1f2933, 0.2); g.strokeEllipse(width / 2, height * 0.55, 1000, 420);
+      g.fillStyle(0x1f2933, 0.05); g.fillEllipse(width / 2, height * 0.38, 1000, 380);
+      g.lineStyle(1, 0x1f2933, 0.2); g.strokeEllipse(width / 2, height * 0.38, 1000, 380);
 
       if (!this.session) { this.scene.start(C.SCENES.HUB); return; }
 
       this._layoutUnits();
-      this._roundBanner('第 1 回合');
+      this._roundBanner(1);
 
       // 指令条 + 战报（DOM）；顺手收掉洞府面板防叠层
       Xuxian.core.DomLayer.closePanel('hub');
@@ -46,15 +46,15 @@
       this._refresh(this.session.snapshot());
     }
 
-    /** 站位：玩家（左）/灵兽（左前）/敌方至多三个（右列） */
+    /** 站位：上半区对峙（底部让给指令条）——我方左、敌方右 */
     _layoutUnits() {
       const { width, height } = this.scale;
       const spots = {
-        player: { x: width * 0.22, y: height * 0.60 },
-        beast: { x: width * 0.34, y: height * 0.76 },
-        e0: { x: width * 0.74, y: height * 0.42 },
-        e1: { x: width * 0.86, y: height * 0.58 },
-        e2: { x: width * 0.70, y: height * 0.74 },
+        player: { x: width * 0.24, y: height * 0.34 },
+        beast: { x: width * 0.40, y: height * 0.48 },
+        e0: { x: width * 0.74, y: height * 0.28 },
+        e1: { x: width * 0.86, y: height * 0.42 },
+        e2: { x: width * 0.70, y: height * 0.46 },
       };
       this._makeUnitView(this.session.player, spots.player, 0x9e2b25);
       if (this.session.beast) this._makeUnitView(this.session.beast, spots.beast, 0x2b6e3f);
@@ -104,11 +104,11 @@
       });
     }
 
-    _roundBanner() {
+    _roundBanner(forced) {
       const { width, height } = this.scale;
-      const r = this.session.round;
+      const r = forced || this.session.round;
       if (this._bannerText) this._bannerText.destroy();
-      this._bannerText = this.add.text(width / 2, height * 0.16, `— 第 ${r} 回合 —`, {
+      this._bannerText = this.add.text(width * 0.42, height * 0.045, `— 第 ${r} 回合 —`, {
         fontFamily: 'serif', fontSize: '22px', color: '#9e2b25',
       }).setLetterSpacing(6).setOrigin(0.5).setAlpha(0.85);
     }
