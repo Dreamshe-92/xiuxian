@@ -18,17 +18,32 @@
   });
 
   Xuxian.entities.CombatFactories = {
-    /** 玩家战斗单位（六维派生；MVP 每场满状态出战——损耗保留制留给 M4 灵泉） */
-    makePlayerUnit() {
+    /** 玩家完整派生（六维 + 装备加成）——面板与战斗共用一口 */
+    playerDerived() {
       const gs = Xuxian.core.GameState.data;
       const p = gs.player || {};
       const s = gs.stats || { attributes: p.attributes || {} };
       const d = Xuxian.systems.stats.AttributeCalc.derive(s.attributes);
+      const eq = Xuxian.systems.inventory.Inventory.equipmentBonus();
+      return {
+        hpMax: d.hpMax + eq.hpMax, mpMax: d.mpMax + eq.mpMax,
+        atk: d.atk + eq.atk, def: d.def + eq.def, spd: d.spd + eq.spd, sense: d.sense,
+      };
+    },
+
+    /** 玩家战斗单位（六维派生+装备；气血法力按"损耗保留"取当前值） */
+    makePlayerUnit() {
+      const gs = Xuxian.core.GameState.data;
+      const p = gs.player || {};
+      const d = this.playerDerived();
+      const res = gs.resources || {};
       return new Xuxian.entities.CombatUnit(Object.assign({
         side: 'ally', kind: 'player',
         name: p.name || '无名道友', level: 1,
         atk: Math.round(d.atk), def: Math.round(d.def), spd: Math.round(d.spd),
         hpMax: d.hpMax, mpMax: d.mpMax,
+        hp: Math.max(1, Math.round(res.hpCurrent != null ? Math.min(res.hpCurrent, d.hpMax) : d.hpMax)),
+        mp: Math.max(0, Math.round(res.mpCurrent != null ? Math.min(res.mpCurrent, d.mpMax) : d.mpMax)),
       }, {}));
     },
 

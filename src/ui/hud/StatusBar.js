@@ -18,9 +18,12 @@
       el.innerHTML = `
         <span class="xl-sb-name" id="sb-name">—</span>
         <span class="xl-sb-item"><span>境界</span><b id="sb-realm">—</b></span>
+        <span class="xl-sb-item"><span>气血</span><b id="sb-hp">—</b></span>
+        <span class="xl-sb-item"><span>法力</span><b id="sb-mp">—</b></span>
         <span class="xl-sb-item xl-sb-wide"><span>修为</span><b id="sb-xw">0/0</b><span class="xl-bar"><i id="sb-xw-bar"></i></span></span>
         <span class="xl-sb-item"><span>感悟</span><b id="sb-gw">0/0</b></span>
         <span class="xl-sb-item"><span>灵气</span><b id="sb-qi">0/0</b></span>
+        <span class="xl-sb-item"><span>灵石</span><b id="sb-stones">0</b></span>
         <span class="xl-sb-item"><span>寿元</span><b id="sb-life">—</b></span>
         <span class="xl-sb-cult" id="sb-cult"></span>
       `;
@@ -47,10 +50,14 @@
 
       $('sb-name').textContent = p.name || '—';
       $('sb-realm').textContent = RP.realmName();
+      const d = Xuxian.entities.CombatFactories.playerDerived();
+      $('sb-hp').textContent = Math.round(res.hpCurrent != null ? res.hpCurrent : d.hpMax) + '/' + d.hpMax;
+      $('sb-mp').textContent = Math.round(res.mpCurrent != null ? res.mpCurrent : d.mpMax) + '/' + d.mpMax;
       $('sb-xw').textContent = Math.floor(s.xiuWei) + '/' + RP.xiuWeiMax();
       $('sb-xw-bar').style.width = Math.min(100, RP.progress() * 100) + '%';
       $('sb-gw').textContent = Math.floor(s.ganWu) + '/' + RP.ganWuMax();
       $('sb-qi').textContent = Math.floor(res.qi) + '/' + Math.floor(res.qiMax || 240);
+      $('sb-stones').textContent = res.stones || 0;
       $('sb-life').textContent = CS.lifespanLeft().toFixed(1) + '载';
 
       const cult = $('sb-cult');

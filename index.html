@@ -369,6 +369,42 @@
     .xl-fate-chip.tier-天 { color: var(--seal-dark); border-color: rgba(160,59,44,.46); background: rgba(160,59,44,.06); }
     .xl-fate-chip.tier-灵 { color: #2c5b4a; border-color: rgba(53,112,92,.38); background: rgba(53,112,92,.05); }
 
+    /* ===== M4：要事卡/占卜角标/装备位/物品栏/骰子 ===== */
+    .xl-quest-card {
+      text-align: left; border: 1px solid var(--line-strong); border-left: 3px solid var(--seal-dark);
+      background: rgba(160,59,44,.04); padding: 10px 14px; margin-top: 12px;
+    }
+    .xl-quest-title { font-size: 12px; color: var(--seal-dark); letter-spacing: 2px; }
+    .xl-quest-name { font-size: 17px; font-weight: bold; letter-spacing: 2px; margin: 3px 0; }
+    .xl-quest-desc { font-size: 13px; color: var(--ink-soft); }
+    .xl-div-badge {
+      font-family: inherit; font-size: 13px; cursor: pointer; margin-left: 12px;
+      padding: 4px 10px; background: var(--paper); border: 1px solid var(--seal-dark); color: var(--seal-dark);
+      vertical-align: middle;
+    }
+    .xl-div-badge.done { border-color: var(--line); color: var(--ink-muted); cursor: default; }
+    .xl-equip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .xl-equip-slot { border: 1px solid var(--line); padding: 8px 10px; text-align: left; background: rgba(255,255,255,.4); }
+    .xl-equip-slot.empty { opacity: .55; }
+    .xl-equip-slot-name { font-size: 11px; color: var(--ink-muted); letter-spacing: 2px; }
+    .xl-equip-item { font-size: 14px; margin: 4px 0; }
+    .xl-equip-bonus { font-size: 12px; color: var(--seal-dark); margin-bottom: 4px; }
+    .xl-inv-list { max-height: 220px; overflow-y: auto; text-align: left; }
+    .xl-inv-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      border: 1px solid var(--line); padding: 8px 12px; margin: 6px 0; background: rgba(255,255,255,.4);
+    }
+    .xl-inv-main { font-size: 14px; }
+    .xl-dice-row { display: flex; gap: 12px; justify-content: center; align-items: center; font-size: 20px; }
+    .xl-dice {
+      display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center;
+      border: 1px solid var(--line-strong); background: var(--paper); font-size: 20px; font-weight: bold;
+    }
+    .xl-div-dirs { display: flex; gap: 8px; justify-content: center; margin: 10px 0; }
+    .xl-hex-name { font-size: 22px; letter-spacing: 4px; font-weight: bold; margin-bottom: 4px; }
+    .xl-hex-poem { font-size: 14px; color: var(--ink-soft); letter-spacing: 1px; margin-bottom: 8px; }
+    .xl-hex-reading { font-size: 14px; line-height: 2; }
+
     /* ===== M3：战斗（指令条/战报/结算）与灵兽袋 ===== */
     .xl-battlebar { text-align: center; }
     .xl-cmd-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
@@ -472,11 +508,15 @@
   <script src="src/systems/stats/RealmProgress.js"></script>
   <script src="src/systems/cultivation/CultivationState.js"></script>
   <script src="src/data/tables/beasts.js"></script>
+  <script src="src/data/tables/items.js"></script>
+  <script src="src/data/tables/divination.js"></script>
   <script src="src/entities/combat/CombatUnit.js"></script>
   <script src="src/entities/combat/Factories.js"></script>
   <script src="src/systems/combat/BattleSession.js"></script>
   <script src="src/systems/combat/AutoBattleAI.js"></script>
   <script src="src/systems/spirit-beast/BeastParty.js"></script>
+  <script src="src/systems/inventory/Inventory.js"></script>
+  <script src="src/systems/quest/TutorialChain.js"></script>
   <script src="src/ui/menus/MainMenu.js"></script>
   <script src="src/ui/panels/CreationPanel.js"></script>
   <script src="src/ui/hud/StatusBar.js"></script>
@@ -488,6 +528,9 @@
   <script src="src/ui/panels/BattleBar.js"></script>
   <script src="src/ui/panels/BattleLogPanel.js"></script>
   <script src="src/ui/panels/BattleResultPanel.js"></script>
+  <script src="src/ui/panels/SpringPanel.js"></script>
+  <script src="src/ui/panels/InventoryPanel.js"></script>
+  <script src="src/ui/panels/DivinationPanel.js"></script>
   <script src="src/scenes/BootScene.js"></script>
   <script src="src/scenes/PreloadScene.js"></script>
   <script src="src/scenes/MainMenuScene.js"></script>

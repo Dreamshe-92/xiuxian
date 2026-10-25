@@ -15,7 +15,8 @@
     get() {
       const gs = Xuxian.core.GameState.data;
       if (!gs.cultivation) gs.cultivation = { active: false, lastTickAt: null, stoppedReason: null };
-      if (!gs.resources) gs.resources = { qi: R().qiMaxBase, qiMax: R().qiMaxBase, lifespanUsed: 0 };
+      if (!gs.resources) gs.resources = { qi: R().qiMaxBase, qiMax: R().qiMaxBase, lifespanUsed: 0, stones: 0 };
+      if (typeof gs.resources.stones !== 'number') gs.resources.stones = 0; // M4 旧档兼容
       return gs.cultivation;
     },
 
@@ -43,6 +44,7 @@
       c.active = true; c.lastTickAt = Date.now(); c.stoppedReason = null;
       Xuxian.core.EventBus.emit(E().CULT_UPDATED);
       Xuxian.core.SaveManager.save(); // 开关即存档：保证离线结算有锚点
+      Xuxian.systems.quest.TutorialChain.mark('firstCult'); // 新手链③：初次闭关
       return { ok: true };
     },
 
@@ -123,8 +125,11 @@
         res.qi = Math.min(res.qiMax, res.qi + regen * idleMin);
         if (minutesToEmpty <= elapsedMin) delta.pausedReason = 'qi';
       } else {
-        // 停止状态：灵气照常回复
+        // 停止状态：灵气照常回复 + 待机缓慢自愈（0.5%/分钟，防 hard-stuck）
         res.qi = Math.min(res.qiMax, res.qi + regen * elapsedMin);
+        const d = Xuxian.entities.CombatFactories.playerDerived();
+        if (res.hpCurrent != null) res.hpCurrent = Math.min(d.hpMax, res.hpCurrent + d.hpMax * 0.005 * elapsedMin);
+        if (res.mpCurrent != null) res.mpCurrent = Math.min(d.mpMax, res.mpCurrent + d.mpMax * 0.005 * elapsedMin);
       }
       delta.qiUsed = Math.round((R().qiUsePerMin * activeMin) - (regen * idleMin));
 

@@ -29,6 +29,7 @@
       });
       if (bag.partyIds.length < LIMITS.partyMax) bag.partyIds.push(id);
       if (!bag.starterId) bag.starterId = id; // 第一只自动设为首发
+      Xuxian.systems.quest.TutorialChain.mark('firstBeast'); // 新手链⑤：结缘灵兽
       return { ok: true, id };
     },
 

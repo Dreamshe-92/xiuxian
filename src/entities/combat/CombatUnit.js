@@ -13,8 +13,11 @@
      */
     constructor(def) {
       Object.assign(this, def);
-      this.hp = this.hpMax;
-      this.mp = this.mpMax;
+      // 损耗保留：若构造时携带当前气血/法力则沿用（夹紧到上限），否则满状态
+      if (def.hp != null) this.hp = Math.max(0, Math.min(def.hp, this.hpMax));
+      else this.hp = this.hpMax;
+      if (def.mp != null) this.mp = Math.max(0, Math.min(def.mp, this.mpMax));
+      else this.mp = this.mpMax;
       this.alive = true;
       this.defending = false; // 本回合护体标记
       this.captured = false;  // 被捕捉离场标记

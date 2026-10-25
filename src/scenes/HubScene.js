@@ -12,8 +12,9 @@
   const ENTRIES = [
     { id: 'cultivation', label: '修 炼 室', sub: '闭关 · 突破', usable: true },
     { id: 'character',   label: '道 身',   sub: '灵根 · 命格 · 属性', usable: true },
-    { id: 'inventory',   label: '储物袋',  sub: 'M4 开放', usable: false },
+    { id: 'inventory',   label: '储物袋',  sub: '物品 · 装备六槽', usable: true },
     { id: 'beasts',      label: '灵兽袋',  sub: '名册 · 出战 · 首发', usable: true },
+    { id: 'spring',      label: '灵眼之泉', sub: '疗养 · 灵石沉淀', usable: true },
     { id: 'outdoor',     label: '外 出',   sub: '青溪坡 · 寻觅 · 战斗', usable: true },
   ];
 
@@ -40,7 +41,8 @@
         Xuxian.core.DomLayer.openPanel('echo', (el, api) => Xuxian.ui.panels.EchoPanel.render(el, api));
       }
 
-      // ② 顶栏 + 洞府入口
+      // ② 顶栏 + 洞府入口（并落新手链②：入世安身）
+      Xuxian.systems.quest.TutorialChain.mark('settle');
       Xuxian.ui.hud.StatusBar.mount();
       Xuxian.core.DomLayer.openPanel('hub', (el, api) => this._renderHubPanel(el, api));
 
@@ -50,9 +52,18 @@
 
     _renderHubPanel(el) {
       const p = Xuxian.core.GameState.data.player || {};
+      const card = Xuxian.systems.quest.TutorialChain.cardInfo();
+      const divDone = this._divinationDone();
       el.innerHTML = `
-        <div class="xl-hub-head"><span class="xl-heading">洞 府</span></div>
+        <div class="xl-hub-head"><span class="xl-heading">洞 府</span>
+          <button class="xl-div-badge ${divDone ? 'done' : ''}" id="hub-div" title="每日占卜">🎲${divDone ? '' : '·新'}</button>
+        </div>
         <div class="xl-sub" style="margin-top:0;">石门半掩，纸窗透白。${p.name ? p.name + '道友，' : ''}今日修行，从何处起？</div>
+        <div class="xl-quest-card" id="hub-quest">
+          <div class="xl-quest-title">${card.title}</div>
+          <div class="xl-quest-name">${card.name}</div>
+          <div class="xl-quest-desc">${card.desc}</div>
+        </div>
         <div class="xl-hub-grid">
           ${ENTRIES.map((e, index) => `
             <div class="xl-hub-entry ${e.usable ? '' : 'dis'}" data-id="${e.id}" data-num="${String(index + 1).padStart(2, '0')}">
@@ -62,6 +73,9 @@
             </div>`).join('')}
         </div>
       `;
+      el.querySelector('#hub-div').addEventListener('click', () => {
+        Xuxian.core.DomLayer.openPanel('divination', (el2, api2) => Xuxian.ui.panels.DivinationPanel.render(el2, api2));
+      });
       el.querySelectorAll('.xl-hub-entry:not(.dis)').forEach((node) => {
         node.addEventListener('click', () => {
           const id = node.dataset.id;
@@ -69,8 +83,12 @@
             Xuxian.core.DomLayer.openPanel('cultivation', (el2, api2) => Xuxian.ui.panels.CultivationPanel.render(el2, api2));
           } else if (id === 'character') {
             Xuxian.core.DomLayer.openPanel('character', (el2, api2) => Xuxian.ui.panels.CharacterPanel.render(el2, api2));
+          } else if (id === 'inventory') {
+            Xuxian.core.DomLayer.openPanel('inventory', (el2, api2) => Xuxian.ui.panels.InventoryPanel.render(el2, api2));
           } else if (id === 'beasts') {
             Xuxian.core.DomLayer.openPanel('beasts', (el2, api2) => Xuxian.ui.panels.BeastBagPanel.render(el2, api2));
+          } else if (id === 'spring') {
+            Xuxian.core.DomLayer.openPanel('spring', (el2, api2) => Xuxian.ui.panels.SpringPanel.render(el2, api2));
           } else if (id === 'outdoor') {
             Xuxian.core.DomLayer.openPanel('outdoor', (el2, api2) => Xuxian.ui.panels.OutdoorPanel.render(el2, api2));
           }
@@ -78,12 +96,17 @@
       });
     }
 
+    _divinationDone() {
+      const gs = Xuxian.core.GameState.data;
+      return gs.flags.lastDivination === new Date().toDateString();
+    }
+
     shutdown() {
       // 收尾：结算+存档（保证 lastTickAt 锚点最新），卸 DOM
       Xuxian.systems.cultivation.CultivationState.settle(Date.now());
       Xuxian.core.SaveManager.save();
       Xuxian.ui.hud.StatusBar.unmount();
-      ['hub', 'cultivation', 'character', 'beasts', 'outdoor', 'echo'].forEach((id) => Xuxian.core.DomLayer.closePanel(id));
+      ['hub', 'cultivation', 'character', 'beasts', 'outdoor', 'inventory', 'spring', 'divination', 'echo'].forEach((id) => Xuxian.core.DomLayer.closePanel(id));
     }
   }
 

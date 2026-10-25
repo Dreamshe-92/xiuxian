@@ -160,14 +160,21 @@
 
     _finish(outcome) {
       this.over = true;
-      // 奖励：胜利/成功逃跑保留捕捉；失败/放弃全部丢失（调研验证的规则）
+      // 战后损耗保留：回写当前气血法力（败北保底 10% 防 hard-stuck；灵泉可恢复）
+      const gs = Xuxian.core.GameState.data;
+      gs.resources.hpCurrent = outcome === 'defeat'
+        ? Math.max(1, Math.round(this.player.hpMax * 0.1))
+        : this.player.hp;
+      gs.resources.mpCurrent = this.player.mp;
+
+      // 奖励：胜利给修为感悟+灵石；成功逃跑保留捕捉；失败/放弃全部丢失（调研规则）
       const keepCaptures = (outcome === 'victory' || outcome === 'flee');
       const totalLevels = this.enemies.reduce((s, e) => s + (e.captured || !e.alive ? e.level : 0), 0);
       this.result = {
         outcome,
         rewards: outcome === 'victory'
-          ? { xiuWei: Math.round(totalLevels * T().rewardXiuWeiPerLevel), ganWu: Math.round(totalLevels * T().rewardGanWuPerLevel) }
-          : { xiuWei: 0, ganWu: 0 },
+          ? { xiuWei: Math.round(totalLevels * T().rewardXiuWeiPerLevel), ganWu: Math.round(totalLevels * T().rewardGanWuPerLevel), stones: Math.round(totalLevels * 2) }
+          : { xiuWei: 0, ganWu: 0, stones: 0 },
         captures: keepCaptures ? this.pendingCaptures.map((u) => ({
           speciesId: u.speciesId, name: u.name, level: u.level,
         })) : [],
@@ -176,6 +183,7 @@
       const stats = Xuxian.systems.stats.RealmProgress.get();
       stats.xiuWei = Math.min(Xuxian.systems.stats.RealmProgress.xiuWeiMax(), stats.xiuWei + this.result.rewards.xiuWei);
       stats.ganWu = Math.min(Xuxian.systems.stats.RealmProgress.ganWuMax(), stats.ganWu + this.result.rewards.ganWu);
+      gs.resources.stones = (gs.resources.stones || 0) + this.result.rewards.stones;
       log(this, outcome === 'victory' ? '本场战斗结束（胜）' : outcome === 'defeat' ? '道友力竭，本场结束（败）' : '本场战斗结束（撤离）');
     }
 
@@ -191,6 +199,7 @@
       (this.result && this.result.captures || []).forEach((c) => party.addCaptured(c));
       Xuxian.core.GameState.data.flags.pendingBattleSettle = false;
       Xuxian.core.SaveManager.save();
+      Xuxian.systems.quest.TutorialChain.mark('firstBattle'); // 新手链④：完成一场战斗
     }
 
     /** UI 快照 */

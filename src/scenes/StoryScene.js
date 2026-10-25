@@ -27,7 +27,10 @@
       this.bindEvent(C.EVENTS.CREATE_DONE, (player) => {
         Xuxian.core.GameState.reset(true);      // 清空旧档状态（保留设置）
         Xuxian.core.GameState.data.player = player;
+        Xuxian.systems.cultivation.CultivationState.get(); // 懒初始化 resources（M4 经济）
+        Xuxian.core.GameState.data.resources.stones = 0;   // 灵石从零开始
         const saved = Xuxian.core.SaveManager.save();
+        Xuxian.systems.quest.TutorialChain.mark('born');   // 新手链①：凝气成形
         Xuxian.core.EventBus.emit(
           C.EVENTS.SHOW_TOAST,
           saved.ok ? '入世成功，此世已录于玉简' : '入世成功（存档不可用：本机存储受限）'
