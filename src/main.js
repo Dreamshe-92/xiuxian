@@ -24,7 +24,7 @@
     // 1) DOM 覆盖层基建（先于游戏实例：面板/Toast 随时可用）
     Xuxian.core.DomLayer.init();
 
-    // 2) 创建 Phaser 游戏，注册场景链（M1：+ StoryScene 凝气创角 / HubScene 洞府占位）
+    // 2) 创建 Phaser 游戏，注册场景链（M5：+ BreakthroughFxScene 突破演出，并行场景按需 launch）
     Xuxian.game = new Phaser.Game(Xuxian.config.gameConfig({
       scene: [
         Xuxian.scenes.BootScene,
@@ -33,6 +33,7 @@
         Xuxian.scenes.StoryScene,
         Xuxian.scenes.HubScene,
         Xuxian.scenes.BattleScene,
+        Xuxian.scenes.BreakthroughFxScene,
       ],
     }));
   });

@@ -20,7 +20,10 @@
       this._unsub = Xuxian.core.EventBus.on(E().CULT_UPDATED, () => this._patch());
     },
 
-    onClose() { if (this._unsub) { this._unsub(); this._unsub = null; } },
+    onClose() {
+      if (this._unsub) { this._unsub(); this._unsub = null; }
+      if (this._fxUnsub) { this._fxUnsub(); this._fxUnsub = null; }
+    },
 
     // ---------- 整体渲染 ----------
     _full() {
@@ -132,9 +135,36 @@
         Xuxian.core.GameState.data.resources.qi -= Xuxian.data.balance.breakthrough.qiCost;
         const result = RP().attempt(stageId);
         Xuxian.core.SaveManager.save();
-        this._renderResult(result);
-        this._renderBreak(); this._renderExtra(); this._patch();
+        // 演出优先：先播突破动效，完成后再弹结算文字（面板暂锁防连点）
+        this._pendingResult = result;
+        box.querySelector('#cp-go').disabled = true;
+        const hubScene = Xuxian.game.scene.getScene('HubScene');
+        hubScene.scene.launch('BreakthroughFxScene', { success: result.success, isMajor: !!(result.gains && result.gains.isMajor) });
+        // 唤醒可能的隐藏页停摆（隐藏时 RAF 停，演出走不下去——直接跳过演出）
+        setTimeout(() => {
+          const fx = Xuxian.game.scene.getScene('BreakthroughFxScene');
+          if (fx && fx.sys.isActive() && !Xuxian.game.loop.paused) {
+            // 正常路径：等演出完成事件
+          } else {
+            // 隐藏页：跳过演出直接结算
+            hubScene.scene.stop('BreakthroughFxScene');
+            this._showPendingResult();
+          }
+        }, 3500);
+        this._fxUnsub = Xuxian.core.EventBus.on(Xuxian.config.constants.EVENTS.BREAKTHROUGH_FX_DONE, () => {
+          if (this._fxUnsub) { this._fxUnsub(); this._fxUnsub = null; }
+          hubScene.scene.stop('BreakthroughFxScene');
+          this._showPendingResult();
+        });
       });
+    },
+
+    _showPendingResult() {
+      if (!this._pendingResult) return;
+      const result = this._pendingResult;
+      this._pendingResult = null;
+      this._renderBreak(); this._renderExtra(); this._patch();
+      this._renderResult(result); // 结果框最后渲染（确认位在突破区内部，避免被重绘覆盖）
     },
 
     _renderResult(result) {

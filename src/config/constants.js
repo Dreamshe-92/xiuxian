@@ -14,6 +14,7 @@
       STORY: 'StoryScene',        // M1 起用（凝气创角/入世剧情）
       HUB: 'HubScene',            // M2 起用（洞府枢纽）
       BATTLE: 'BattleScene',      // M3 起用（战斗演出）
+      BREAKTHROUGH_FX: 'BreakthroughFxScene', // M5 起用（突破演出）
     },
 
     /** 事件名（EventBus 用）——M0 仅菜单/Toast，后续里程碑在此追加 */
@@ -31,6 +32,8 @@
       BATTLE_LOG: 'battle:log',
       BATTLE_STATE: 'battle:state',
       BATTLE_OVER: 'battle:over',
+      // 突破演出（M5）
+      BREAKTHROUGH_FX_DONE: 'breakthrough-fx:done',
       // 通用 UI
       SHOW_TOAST: 'ui:show-toast',
       GAME_BOOTED: 'game:booted',
