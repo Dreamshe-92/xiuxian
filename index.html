@@ -42,7 +42,7 @@
     /* ===== 面板：宣纸双层框 + 朱砂顶线 ===== */
     .xl-panel {
       position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      width: min(910px, calc(100vw - 48px)); max-height: min(660px, calc(100vh - 88px));
+      width: min(910px, calc(100vw - 48px)); max-height: min(880px, calc(100vh - 88px));
       overflow: auto; overscroll-behavior: contain;
       padding: 40px min(46px, 5vw) 34px;
       pointer-events: auto; text-align: center; color: var(--ink);
@@ -282,6 +282,13 @@
 
     /* ===== 修炼室：闭关 / 突破 / 待务 ===== */
     .xl-cult-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 14px; align-items: stretch; text-align: left; }
+    /* 修炼室三列：闭关 | 突破 | 属性分配（一屏无滚动） */
+    [data-panel-id="cultivation"] { width: min(1280px, calc(100vw - 48px)); }
+    .xl-cult-grid--3 { grid-template-columns: minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr); }
+    .xl-cult-grid--3 .xl-sheet { padding: 14px 16px; }
+    .xl-cult-grid--3 .xl-sheet-title { font-size: 15px; margin-bottom: 8px; }
+    .xl-alloc-row { margin: 4px 0; }
+    .xl-alloc-btn { width: 24px; height: 24px; font-size: 14px; }
     .xl-cult-status {
       display: inline-flex; align-items: center; gap: 8px; min-height: 33px; padding: 0 11px; margin-bottom: 14px;
       font-size: 14px; letter-spacing: 1px; border-radius: 2px;
@@ -338,7 +345,7 @@
       background: rgba(253,248,234,.48); border: 1px solid rgba(25,29,31,.09); border-radius: 2px;
     }
     .xl-alloc-row .xl-label { min-width: 0; margin: 0; }
-    .xl-alloc-v { min-width: 0; color: var(--ink); font-weight: 700; text-align: right; }
+    .xl-alloc-v { min-width: 34px; margin-left: auto; color: var(--ink); font-weight: 700; text-align: right; }
     .xl-alloc-btn {
       width: 31px; height: 31px; padding: 0; cursor: pointer; line-height: 1;
       color: var(--ink-soft); background: rgba(253,248,234,.82);

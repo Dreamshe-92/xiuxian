@@ -30,12 +30,11 @@
       const el = this._el;
       el.innerHTML = `
         <div class="xl-step-tag"><span class="xl-kicker">洞府 · 修炼室</span></div>
-        <div id="cp-close-zone"></div>
-        <div class="xl-cult-grid">
+        <div class="xl-cult-grid xl-cult-grid--3">
           <div class="xl-sheet" id="cp-cult"></div>
           <div class="xl-sheet" id="cp-break"></div>
+          <div class="xl-sheet xl-sheet--quiet" id="cp-extra"></div>
         </div>
-        <div class="xl-sheet xl-sheet--quiet" id="cp-extra" style="margin-top:14px;"></div>
         <div class="xl-btn-row">
           <button class="xl-btn xl-btn--ghost" id="cp-back">返回洞府</button>
         </div>
