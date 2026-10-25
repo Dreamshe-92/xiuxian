@@ -79,6 +79,8 @@
       el.querySelectorAll('.xl-hub-entry:not(.dis)').forEach((node) => {
         node.addEventListener('click', () => {
           const id = node.dataset.id;
+          // 入口互斥：先收掉已开的设施面板（保留 hub 本体），防叠层遮挡
+          ['cultivation', 'character', 'inventory', 'beasts', 'spring', 'outdoor', 'echo'].forEach((pid) => Xuxian.core.DomLayer.closePanel(pid));
           if (id === 'cultivation') {
             Xuxian.core.DomLayer.openPanel('cultivation', (el2, api2) => Xuxian.ui.panels.CultivationPanel.render(el2, api2));
           } else if (id === 'character') {

@@ -36,7 +36,11 @@
           <div class="xl-sheet" id="cp-break"></div>
         </div>
         <div class="xl-sheet xl-sheet--quiet" id="cp-extra" style="margin-top:14px;"></div>
+        <div class="xl-btn-row">
+          <button class="xl-btn xl-btn--ghost" id="cp-back">返回洞府</button>
+        </div>
       `;
+      el.querySelector('#cp-back').addEventListener('click', () => this._api.close());
       this._renderCult();
       this._renderBreak();
       this._renderExtra();
