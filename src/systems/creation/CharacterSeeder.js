@@ -79,6 +79,25 @@
       };
     }
 
+    /**
+     * 心念 → 立誓句（语义适配）：
+     *   有实义短语（含中文且≥4字）→ 原句引用；纯数字 → "数字心咒"转写；
+     *   过短/无中文 → 通用誓句。保证 {oath} 占位永远得到通顺的话。
+     */
+    _buildOath(intent, intentParse) {
+      const T = Xuxian.data.tables.backgroundFragments.oathFallbacks;
+      const text = String(intent || '').trim();
+      const hasChinese = /[\u4e00-\u9fa5]/.test(text);
+      const meaningful = hasChinese && text.replace(/[\u4e00-\u9fa5]/g, '').length >= 0 && text.length >= 4;
+      const pick = (arr) => arr[Math.floor(this.rng() * arr.length)];
+      if (meaningful && !/^\d+$/.test(text)) {
+        return `心念所系：「${text}」。`;
+      }
+      // 纯数字/无实义：按解析结果选转写句
+      const tagged = intentParse && intentParse.tags && intentParse.tags.size > 0;
+      return pick(tagged ? T.withTags : (meaningful ? T.withTags : (/^\d+$/.test(text) ? T.numeric : T.plain)));
+    }
+
     /** 生成完整骨架 */
     rollSkeleton(intent, intentParse) {
       const N = Xuxian.data.tables.names;
@@ -91,10 +110,11 @@
       const encounter = pick(B.encounters);
       const personality = pick(B.personalities);
       const template = pick(B.templates);
+      const oath = this._buildOath(intent, intentParse);
       const story = template
         .replace('{origin}', origin).replace('{family}', family)
         .replace('{encounter}', encounter).replace('{personality}', personality)
-        .replace('{intent}', intent);
+        .replace('{oath}', oath);
 
       const spiritRoot = this._rollSpiritRoot(intentParse);
       const attributes = {};
